@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage> {
     double width = size.width;
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: height / 11,
         backgroundColor: const Color(0xffFFFFFF),
         title: Padding(
           padding: const EdgeInsets.only(left: 8.0,top: 20),
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(30.0),
                       image: const DecorationImage(
                         image: AssetImage('assets/images/masjidBack.png',),
-                        fit: BoxFit.fill
+                        fit: BoxFit.cover
                       ),
                       boxShadow: [
                         BoxShadow(

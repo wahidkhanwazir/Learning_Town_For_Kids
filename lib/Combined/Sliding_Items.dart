@@ -110,6 +110,7 @@ class _SlidingItemsState extends State<SlidingItems> {
     double width = size.width;
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: height / 11,
         backgroundColor: const Color(0xffFFFFFF),
         title: Padding(
           padding: const EdgeInsets.only(left: 8.0,top: 20),
@@ -135,231 +136,258 @@ class _SlidingItemsState extends State<SlidingItems> {
                 ]
             )
         ),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 3.0),
-              child: Container(
-                height: height / 3.6,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30.0),
-                    image: const DecorationImage(
-                        image: AssetImage('assets/images/SceneriesBack/sceneryBack 2.png',),
-                        fit: BoxFit.fill
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.shade500,
-                        blurRadius: 2,
-                        spreadRadius: 2,
-                        offset: const Offset(0, 1),
-                      )
-                    ]
-                ),
-                child: Row(
-                  children: [
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: SizedBox(
-                        height: height / 3.5,
-                        child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Image.asset('assets/images/Kids/kid 3.png')
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 13.0,right: 10.0,bottom: 10.0,left: 8.0),
-                        child: Text(widget.items == 'alphabets' ? 'Lets Start! Lets Spell alphabets Together. Are You Ready?' :
-                        widget.items == 'numbers' ? 'Lets Start! Lets count the numbers Together. Are You Ready?'
-                            : 'Lets Start! Lets Spell urdu letters Together. Are You Ready?',
-                          style: TextStyle(
-                              fontFamily: 'kalam',
-                              fontSize: width / 17,
-                              fontWeight: FontWeight.values[5]
-                          ),
-                          softWrap: true,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: height / 2.6,
-              child: CarouselSlider(
-                carouselController: _carouselController,
-                options: CarouselOptions(
-                    autoPlay: isAutoPlayPaused,
-                    reverse: urdu ? true : false,
-                    aspectRatio: (width / 100) * 0.43,
-                    enlargeCenterPage: true,
-                    scrollPhysics: const NeverScrollableScrollPhysics(),
-                    viewportFraction: 0.7,
-                    onPageChanged: (index, reason) async {
-                      setState(() {
-                        current = index;
-                      });
-                      await playAudioForCurrentItem(index);
-                    }
-                ),
-                items: items.asMap().entries.map((entry) {
-                  return Container(
-                    decoration: BoxDecoration(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0,right: 10.0,top: 3.0),
+                child: Container(
+                  height: height / 3.9,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
                       color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: slidingcolorList[entry.key % slidingcolorList.length],
-                        width: 4,
+                      borderRadius: BorderRadius.circular(30.0),
+                      image: const DecorationImage(
+                          image: AssetImage('assets/images/SceneriesBack/sceneryBack 2.png',),
+                          fit: BoxFit.cover
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.shade600,
-                          blurRadius: 4,
+                          color: Colors.grey.shade500,
+                          blurRadius: 2,
                           spreadRadius: 2,
-                          offset: const Offset(0, 0),
+                          offset: const Offset(0, 1),
+                        )
+                      ]
+                  ),
+                  child: Row(
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: SizedBox(
+                          height: height / 3.5,
+                          child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Image.asset('assets/images/Kids/kid 3.png')
+                          ),
                         ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: widget.items == 'urdu letters' ? 15.0 : 0.0 ),
-                        child: Text(entry.value.toString(),
-                          style: TextStyle(
-                            fontFamily: fontFamily,
-                            fontSize:  widget.items == 'numbers'
-                                ? width / 2.5 : widget.items == 'alphabets'
-                                ? width / 2.5 : width / 2.0,
-                            fontWeight: FontWeight.w400,
-                            color: slidingcolorList[entry.key % slidingcolorList.length],
-                            shadows: [
-                              Shadow(
-                                color: Colors.grey.shade500,
-                                blurRadius: 1,
-                                offset: const Offset(6, 0),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 13.0,right: 10.0,bottom: 10.0,left: 8.0),
+                          child: Text(widget.items == 'alphabets' ? 'Lets Start! Lets Spell alphabets Together. Are You Ready?' :
+                          widget.items == 'numbers' ? 'Lets Start! Lets count the numbers Together. Are You Ready?'
+                              : 'Lets Start! Lets Spell urdu letters Together. Are You Ready?',
+                            style: TextStyle(
+                                fontFamily: 'kalam',
+                                fontSize: width / 17,
+                                fontWeight: FontWeight.values[5]
+                            ),
+                            softWrap: true,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: height / 2.5,
+                width: double.infinity,
+                child: Center(
+                  child: SizedBox(
+                    height: height / 2.8,
+                    width: double.infinity,
+                    child: CarouselSlider(
+                      carouselController: _carouselController,
+                      options: CarouselOptions(
+                          autoPlay: isAutoPlayPaused,
+                          reverse: urdu ? true : false,
+                          //aspectRatio: (width / 100) * 0.43,
+                          enlargeCenterPage: true,
+                          scrollPhysics: const NeverScrollableScrollPhysics(),
+                          viewportFraction: 0.7,
+                          onPageChanged: (index, reason) async {
+                            setState(() {
+                              current = index;
+                            });
+                            await playAudioForCurrentItem(index);
+                          }
+                      ),
+                      items: items.asMap().entries.map((entry) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: slidingcolorList[entry.key % slidingcolorList.length],
+                              width: 4,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.shade600,
+                                blurRadius: 4,
+                                spreadRadius: 2,
+                                offset: const Offset(0, 0),
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                InkWell(
-                  onTap: () async {
-                    await _playClickSound();
-                    setState(() {
-                        _carouselController.animateToPage(
-                          current = 0,
-                          duration: const Duration(milliseconds: 300),
-                          curve: Curves.ease,
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(top: widget.items == 'urdu letters' ? 15.0 : 0.0 ),
+                              child: Text(entry.value.toString(),
+                                style: TextStyle(
+                                  fontFamily: fontFamily,
+                                  fontSize:  widget.items == 'numbers'
+                                      ? width / 2.5 : widget.items == 'alphabets'
+                                      ? width / 2.5 : width / 2.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: slidingcolorList[entry.key % slidingcolorList.length],
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.grey.shade500,
+                                      blurRadius: 1,
+                                      offset: const Offset(6, 0),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         );
-                    });
-                  },
-                  child: Container(
-                    height: height / 8.9,
-                    width: height / 8.9,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff131CF4),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                        color: Colors.grey.shade700,
-                        width: 1,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade600,
-                          blurRadius: 3,
-                          spreadRadius: 1,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Image.asset('assets/images/repeat 1.png',scale: height / 150,),
+                      }).toList(),
                     ),
                   ),
                 ),
-                InkWell(
-                  onTap: () async {
-                    await _playClickSound();
-                    setState(() {
-                      isAutoPlayPaused = !isAutoPlayPaused;
-                      if (isAutoPlayPaused) {
-                        _carouselController.stopAutoPlay();
-                      } else {
-                        _carouselController.startAutoPlay();
-                      }
-                    });
-                  },
-                  child: Container(
-                    height: height / 9.2,
-                    width: height / 9.2,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.grey.shade700,
-                        width: 1,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade600,
-                          blurRadius: 3,
-                          spreadRadius: 1,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Image.asset(isAutoPlayPaused ? 'assets/images/play.png'
-                          : 'assets/images/forward.png', scale: height / 170,),
-                    ),
-                  ),
-                ),
-                InkWell(
-                  onTap: () async {
-                    if(isAutoPlayPaused!= true) {
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                    onTap: () async {
                       await _playClickSound();
-                      await playAudioForCurrentItem(current);
-                    }
-                  },
-                  child: Container(
-                    height: height / 8.9,
-                    width: height / 8.9,
-                    decoration: BoxDecoration(
-                      color: const Color(0xff131CF4),
-                        shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.grey.shade700,
-                        width: 1,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade600,
-                          blurRadius: 3,
-                          spreadRadius: 1,
-                          offset: const Offset(0, 0),
+                      setState(() {
+                          _carouselController.animateToPage(
+                            current = 0,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.ease,
+                          );
+                      });
+                    },
+                    child: Container(
+                      height: height / 8.9,
+                      width: height / 8.9,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff131CF4),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                          color: Colors.grey.shade700,
+                          width: 1,
                         ),
-                      ],
-                    ),
-                    child: Center(
-                      child: Image.asset('assets/images/volume 1.png',scale: height / 150,),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade600,
+                            blurRadius: 3,
+                            spreadRadius: 1,
+                            offset: const Offset(0, 0),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: SizedBox(
+                            height: height / 10.0,
+                            width: height / 10.0,
+                            child: Center(
+                                child: Image.asset('assets/images/repeat 1.png'))),
+                      ),
                     ),
                   ),
-                )
-              ],
-            )
-          ],
+                  InkWell(
+                    onTap: () async {
+                      await _playClickSound();
+                      setState(() {
+                        isAutoPlayPaused = !isAutoPlayPaused;
+                        if (isAutoPlayPaused) {
+                          _carouselController.stopAutoPlay();
+                        } else {
+                          _carouselController.startAutoPlay();
+                        }
+                      });
+                    },
+                    child: Container(
+                      height: height / 9.0,
+                      width: height / 9.0,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.grey.shade700,
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade600,
+                            blurRadius: 3,
+                            spreadRadius: 1,
+                            offset: const Offset(0, 0),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: SizedBox(
+                          height: height / 15,
+                          width: height / 15,
+                          child: Center(
+                            child: Image.asset(isAutoPlayPaused ? 'assets/images/play.png'
+                                : 'assets/images/forward.png',fit: BoxFit.fill,),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      if(isAutoPlayPaused!= true) {
+                        await _playClickSound();
+                        await playAudioForCurrentItem(current);
+                      }
+                    },
+                    child: Container(
+                      height: height / 8.9,
+                      width: height / 8.9,
+                      decoration: BoxDecoration(
+                        color: const Color(0xff131CF4),
+                          shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.grey.shade700,
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.shade600,
+                            blurRadius: 3,
+                            spreadRadius: 1,
+                            offset: const Offset(0, 0),
+                          ),
+                        ],
+                      ),
+                      child: Center(
+                        child: SizedBox(
+                            height: height / 10.0,
+                            width: height / 10.0,
+                            child: Center(
+                                child: Image.asset('assets/images/volume 1.png'))),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 70,
+                width: double.infinity,
+              ),
+            ],
+          ),
         ),
       ),
     );

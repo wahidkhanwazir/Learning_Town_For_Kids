@@ -139,7 +139,7 @@ class _ItemsDetailState extends State<ItemsDetail> {
                         borderRadius: BorderRadius.circular(30.0),
                         image: const DecorationImage(
                             image: AssetImage('assets/images/SceneriesBack/sceneryBack 3.png',),
-                            fit: BoxFit.fill
+                            fit: BoxFit.cover
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -323,7 +323,10 @@ class _ItemsDetailState extends State<ItemsDetail> {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.only(right: 5.0),
-                          child: Image.asset('assets/images/backward.png',scale: height / 170,),
+                          child: SizedBox(
+                              height: height / 9.8,
+                              width: height / 9.8,
+                              child: Image.asset('assets/images/backward.png')),
                         ),
                       ),
                     ),
@@ -353,7 +356,10 @@ class _ItemsDetailState extends State<ItemsDetail> {
                         ],
                       ),
                       child: Center(
-                        child: Image.asset('assets/images/volume 1.png',scale: height / 150,),
+                        child: SizedBox(
+                            height: height / 10,
+                            width: height / 10,
+                            child: Image.asset('assets/images/volume 1.png')),
                       ),
                     ),
                   ),
@@ -400,7 +406,10 @@ class _ItemsDetailState extends State<ItemsDetail> {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 5.0),
-                          child: Image.asset('assets/images/forward.png',scale: height / 170,),
+                          child: SizedBox(
+                              height: height / 9.8,
+                              width: height / 9.8,
+                              child: Image.asset('assets/images/forward.png')),
                         ),
                       ),
                     ),

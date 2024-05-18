@@ -91,6 +91,7 @@ class _SelecteditemState extends State<Selecteditem> {
     double width = size.width;
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: height / 11,
         backgroundColor: const Color(0xffFFFFFF),
         title: Padding(
           padding: const EdgeInsets.only(left: 8.0,top: 20),
@@ -128,7 +129,7 @@ class _SelecteditemState extends State<Selecteditem> {
                     borderRadius: BorderRadius.circular(30.0),
                     image: const DecorationImage(
                         image: AssetImage('assets/images/SceneriesBack/sceneryBack1.png',),
-                        fit: BoxFit.fill
+                        fit: BoxFit.cover
                     ),
                     boxShadow: [
                       BoxShadow(
@@ -161,7 +162,7 @@ class _SelecteditemState extends State<Selecteditem> {
                             Text('Learn ${widget.title} with me. Repeat with me',
                               style: TextStyle(
                                   fontFamily: 'kalam',
-                                  fontSize: width / 19,
+                                  fontSize: width / 21,
                                   fontWeight: FontWeight.values[5]
                               ),
                               softWrap: true,
