@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:learning_town_for_kids/Combined/ItemsDetail.dart';
 import 'package:learning_town_for_kids/Combined/More/More_Item_Detail.dart';
 import 'package:learning_town_for_kids/Combined/More/More_main.dart';
 import 'package:learning_town_for_kids/Lists/AllLists.dart';
@@ -27,7 +29,23 @@ class _HomePageState extends State<HomePage> {
     'assets/images/Urdu 1.png',
     'assets/images/more 1.png',
   ];
-  
+
+  late AudioPlayer clickSound = AudioPlayer();
+  @override
+  void initState() {
+    super.initState();
+    clickSound = AudioPlayer();
+  }
+  @override
+  void dispose() {
+    clickSound.dispose();
+    super.dispose();
+  }
+  Future<void> _playClickSound() async {
+    await clickSound.setAsset('assets/ClickSound/clickSound.wav');
+    clickSound.play();
+  }
+
   @override
   Widget build(BuildContext context) {
     var getStorage = Provider.of<StorageProvider>(context);
@@ -115,8 +133,8 @@ class _HomePageState extends State<HomePage> {
                                 Align(
                                   alignment: Alignment.bottomRight,
                                   child: InkWell(
-                                    onTap: (){
-
+                                    onTap: () async {
+                                      await _playClickSound();
                                     },
                                     child: Container(
                                       height: height / 22,
@@ -170,13 +188,14 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0,right: 10.0),
                   child: InkWell(
-                    onTap: (){
+                    onTap: () async {
+                      await _playClickSound();
                       Navigator.push(context, 
                           MaterialPageRoute(builder: (context)=> 
                               getStorage.getLastImage() == 'assets/images/abc 1.png'
                            || getStorage.getLastImage() == 'assets/images/123 1.png' 
                            || getStorage.getLastImage() == 'assets/images/Urdu 1.png'  
-                           ?  Selecteditem(title: getStorage.getLastCatagory(),) :
+                           ?  ItemsDetail(title: getStorage.getLastCatagory(), index: getStorage.getLastSubCatagory(),) :
                               getStorage.getLastCatagory() == 'More' ?
                               const MoreItems() :
                               MoreItemDetail(title: getStorage.getLastCatagory())
@@ -237,6 +256,7 @@ class _HomePageState extends State<HomePage> {
                                     fontSize: width / 18,
                                     fontWeight: FontWeight.w600
                                   ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(getStorage.getLastCatagory() == 'alphabets' ?
                                 '${getStorage.getLastSubCatagory() + 1} of ${AllLists.allAlphabetsDetail.length} alphabets'
@@ -255,6 +275,7 @@ class _HomePageState extends State<HomePage> {
                                       fontSize: width / 23,
                                       fontWeight: FontWeight.w500
                                    ),
+                                  overflow: TextOverflow.ellipsis,
                                  ),
                                ],
                              ),
@@ -276,7 +297,8 @@ class _HomePageState extends State<HomePage> {
                     inkwellButton(context, width,1, 'Numbers', 'numbers'),
                     inkwellButton(context, width,2, 'Urdu Alphabets', 'urdu letters'),
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
+                        await _playClickSound();
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context)=> const MoreItems()));
                         getStorage.setLast(0, 'More', imageList[3]);
@@ -332,12 +354,11 @@ class _HomePageState extends State<HomePage> {
       String title,
       String passingTitle,
       ) {
-    var getStorage = Provider.of<StorageProvider>(context);
     return InkWell(
-                  onTap: (){
+                  onTap: () async {
+                    await _playClickSound();
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context)=> Selecteditem(title: passingTitle,)));
-                    getStorage.setLast(0, passingTitle, imageList[index]);
                   },
                   child: Container(
                     decoration: BoxDecoration(

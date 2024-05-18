@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:learning_town_for_kids/Lists/AllLists.dart';
 
 class MoreItemDetail extends StatefulWidget {
@@ -47,8 +48,20 @@ class _MoreItemDetailState extends State<MoreItemDetail> {
         break;
       default:
         items = [];
-        //colorList = [];
+        colorList = [];
     }
+    clickSound = AudioPlayer();
+  }
+
+  late AudioPlayer clickSound = AudioPlayer();
+  @override
+  void dispose() {
+    clickSound.dispose();
+    super.dispose();
+  }
+  Future<void> _playClickSound() async {
+    await clickSound.setAsset('assets/ClickSound/clickSound.wav');
+    clickSound.play();
   }
 
   @override
@@ -125,9 +138,9 @@ class _MoreItemDetailState extends State<MoreItemDetail> {
                           child: Text(widget.title == 'shapes' ? 'Tap on the shape to start learning'
                               : widget.title == 'animals' ? 'Learn about different animals'
                               : widget.title == 'trees' ? 'You know different types of trees? Learn now'
-                              : widget.title == 'colors' ? 'colors,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,'
-                              : widget.title == 'vegetables' ? 'vegetables ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,'
-                              : 'fruits ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,',
+                              : widget.title == 'colors' ? 'Learn Different Colors'
+                              : widget.title == 'vegetables' ? 'Lets Start Learning Vegetables'
+                              : 'Fruits Are Delicious. Learn About It.',
                             style: TextStyle(
                                 fontFamily: 'kalam',
                                 fontSize: width / 17,
@@ -150,7 +163,8 @@ class _MoreItemDetailState extends State<MoreItemDetail> {
                   shrinkWrap: true,
                   children: List.generate(items.length, (index) {
                     return InkWell(
-                      onTap: (){
+                      onTap: () async {
+                        await _playClickSound();
                         // Navigator.push(context,
                         //     MaterialPageRoute(builder: (context)=> ItemsDetail(
                         //       index: index,
@@ -159,8 +173,8 @@ class _MoreItemDetailState extends State<MoreItemDetail> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: widget.title == 'shapes' ? Colors.white
-                          : colorList[index % colorList.length],
+                          color: widget.title == 'animals' || widget.title == 'trees'
+                              ? colorList[index % colorList.length] : Colors.white,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(

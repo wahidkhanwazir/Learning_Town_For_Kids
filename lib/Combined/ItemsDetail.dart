@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:learning_town_for_kids/Lists/AllLists.dart';
+import 'package:provider/provider.dart';
+
+import '../Storage_Provider/Storage_provider.dart';
 
 class ItemsDetail extends StatefulWidget {
   int index;
@@ -23,6 +26,8 @@ class _ItemsDetailState extends State<ItemsDetail> {
   void initState() {
     super.initState();
     updateItems();
+    playSimpleAudioForCurrentIndex(widget.index);
+    clickSound = AudioPlayer();
   }
 
   void updateItems() {
@@ -46,9 +51,26 @@ class _ItemsDetailState extends State<ItemsDetail> {
     }
   }
 
-  final AudioPlayer audioPlayer = AudioPlayer();
+  final AudioPlayer simpleAudioPlayer = AudioPlayer();
 
-  Future<void> playAudioForCurrentIndex(int index) async {
+  Future<void> playSimpleAudioForCurrentIndex(int index) async {
+    try {
+      String audioPath = '';
+      if (widget.title == 'alphabets') {
+        audioPath = AllLists.simpleAlphabetsAudios[widget.index];
+      } else if (widget.title == 'numbers') {
+        audioPath = AllLists.simpleNumbersAudios[widget.index];
+      } else if (widget.title == 'urdu letters') {
+        audioPath = AllLists.simpleUrduAudios[widget.index];
+      }
+      await simpleAudioPlayer.setAsset(audioPath);
+      await simpleAudioPlayer.play();
+    } catch (e) {
+      print(',,,,,,,,,,,,,Error playing audio: $e');
+    }
+  }
+
+  Future<void> playDetailAudioForCurrentIndex(int index) async {
     try {
       String audioPath = '';
       if (widget.title == 'alphabets') {
@@ -58,15 +80,30 @@ class _ItemsDetailState extends State<ItemsDetail> {
       } else if (widget.title == 'urdu letters') {
         audioPath = AllLists.detailUrduAudios[widget.index];
       }
-      await audioPlayer.setAsset(audioPath);
-      await audioPlayer.play();
+      await simpleAudioPlayer.setAsset(audioPath);
+      await simpleAudioPlayer.play();
     } catch (e) {
       print(',,,,,,,,,,,,,Error playing audio: $e');
     }
   }
 
   @override
+  void dispose() {
+    simpleAudioPlayer.stop();
+    simpleAudioPlayer.dispose();
+    clickSound.dispose();
+    super.dispose();
+  }
+
+  late AudioPlayer clickSound = AudioPlayer();
+  Future<void> _playClickSound() async {
+    await clickSound.setAsset('assets/ClickSound/clickSound.wav');
+    clickSound.play();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var getStorage = Provider.of<StorageProvider>(context);
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
@@ -127,16 +164,18 @@ class _ItemsDetailState extends State<ItemsDetail> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 5.0,right: 5.0,),
+                            padding: const EdgeInsets.only(top: 10.0,right: 5.0,),
                             child: Column(
                               children: [
                                 Text(items,
                                   style: TextStyle(
                                       fontFamily: 'kalam',
-                                      fontSize: width / 20,
-                                      fontWeight: FontWeight.values[5]
+                                      fontSize: width / 19,
+                                      fontWeight: FontWeight.values[5],
                                   ),
-                                  softWrap: true,
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3
                                 ),
                               ],
                             ),
@@ -150,7 +189,8 @@ class _ItemsDetailState extends State<ItemsDetail> {
                       right: 10,
                       child: InkWell(
                         onTap: () async {
-                          await playAudioForCurrentIndex(widget.index);
+                          await _playClickSound();
+                          await playDetailAudioForCurrentIndex(widget.index);
                         },
                         child: Container(
                           height: height / 22,
@@ -241,20 +281,32 @@ class _ItemsDetailState extends State<ItemsDetail> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   InkWell(
-                    onTap: (){
+                    onTap: () async {
+                      await _playClickSound();
                       if (widget.index >= 1) {
                         setState(() {
                           widget.index--;
                           updateItems();
+                          playSimpleAudioForCurrentIndex(widget.index);
                         });
                       }
+                      getStorage.setLast(
+                        widget.index,
+                        widget.title == 'alphabets' ? 'alphabets'
+                            : widget.title == 'numbers' ? 'numbers'
+                            : widget.title == 'urdu letters' ? 'urdu letters'
+                            : 'More',
+                        widget.title == 'alphabets' ? 'assets/images/abc 1.png'
+                            : widget.title == 'numbers' ? 'assets/images/123 1.png'
+                            : widget.title == 'urdu letters' ? 'assets/images/Urdu 1.png'
+                            : 'assets/images/more 1.png',);
                     },
                     child: Container(
-                      height: height / 8.9,
-                      width: height / 8.9,
+                      height: height / 9.2,
+                      width: height / 9.2,
                       decoration: BoxDecoration(
-                        color: const Color(0xff131CF4),
-                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                        shape: BoxShape.circle,
                         border: Border.all(
                           color: Colors.grey.shade700,
                           width: 1,
@@ -269,20 +321,24 @@ class _ItemsDetailState extends State<ItemsDetail> {
                         ],
                       ),
                       child: Center(
-                        child: Image.asset('assets/images/backward.png',scale: height / 170,),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 5.0),
+                          child: Image.asset('assets/images/backward.png',scale: height / 170,),
+                        ),
                       ),
                     ),
                   ),
                   InkWell(
                     onTap: () async {
-                      await playAudioForCurrentIndex(widget.index);
+                      await _playClickSound();
+                      await playSimpleAudioForCurrentIndex(widget.index);
                     },
                     child: Container(
                       height: height / 8.9,
                       width: height / 8.9,
                       decoration: BoxDecoration(
-                        color: const Color(0xffFF7A00),
-                        borderRadius: BorderRadius.circular(30),
+                        color: const Color(0xff131CF4),
+                        shape: BoxShape.circle,
                         border: Border.all(
                           color: Colors.grey.shade700,
                           width: 1,
@@ -303,19 +359,31 @@ class _ItemsDetailState extends State<ItemsDetail> {
                   ),
                   InkWell(
                     onTap: () async {
+                      await _playClickSound();
                       if (widget.index < listLength - 1) {
                         setState(() {
                           widget.index++;
                           updateItems();
+                          playSimpleAudioForCurrentIndex(widget.index);
                         });
                       }
+                      getStorage.setLast(
+                        widget.index,
+                        widget.title == 'alphabets' ? 'alphabets'
+                            : widget.title == 'numbers' ? 'numbers'
+                            : widget.title == 'urdu letters' ? 'urdu letters'
+                            : 'More',
+                        widget.title == 'alphabets' ? 'assets/images/abc 1.png'
+                            : widget.title == 'numbers' ? 'assets/images/123 1.png'
+                            : widget.title == 'urdu letters' ? 'assets/images/Urdu 1.png'
+                            : 'assets/images/more 1.png',);
                     },
                     child: Container(
-                      height: height / 8.9,
-                      width: height / 8.9,
+                      height: height / 9.2,
+                      width: height / 9.2,
                       decoration: BoxDecoration(
-                        color: const Color(0xff131CF4),
-                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                        shape: BoxShape.circle,
                         border: Border.all(
                           color: Colors.grey.shade700,
                           width: 1,
@@ -330,7 +398,10 @@ class _ItemsDetailState extends State<ItemsDetail> {
                         ],
                       ),
                       child: Center(
-                        child: Image.asset('assets/images/forward.png',scale: height / 170,),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 5.0),
+                          child: Image.asset('assets/images/forward.png',scale: height / 170,),
+                        ),
                       ),
                     ),
                   )

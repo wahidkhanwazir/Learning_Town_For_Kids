@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:learning_town_for_kids/Combined/More/More_Item_Detail.dart';
 import 'package:learning_town_for_kids/Storage_Provider/Storage_provider.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,22 @@ class _MoreItemsState extends State<MoreItems> {
     const Color(0xffFFB8B8),
     const Color(0xffB5A9FF),
   ];
+
+  late AudioPlayer clickSound = AudioPlayer();
+  @override
+  void initState() {
+    super.initState();
+    clickSound = AudioPlayer();
+  }
+  @override
+  void dispose() {
+    clickSound.dispose();
+    super.dispose();
+  }
+  Future<void> _playClickSound() async {
+    await clickSound.setAsset('assets/ClickSound/clickSound.wav');
+    clickSound.play();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +163,8 @@ class _MoreItemsState extends State<MoreItems> {
       ) {
     var getStorage = Provider.of<StorageProvider>(context);
     return InkWell(
-      onTap: (){
+      onTap: () async {
+        await _playClickSound();
         getStorage.setLast(index, title2, imageList[index]);
         Navigator.push(context,
             MaterialPageRoute(builder: (context)=> MoreItemDetail(title: title2,)));

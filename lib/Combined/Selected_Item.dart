@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:learning_town_for_kids/Combined/ItemsDetail.dart';
 import 'package:provider/provider.dart';
 import '../Storage_Provider/Storage_provider.dart';
@@ -68,6 +69,18 @@ class _SelecteditemState extends State<Selecteditem> {
         items = [];
         colorList = [];
     }
+    clickSound = AudioPlayer();
+  }
+
+  late AudioPlayer clickSound = AudioPlayer();
+  @override
+  void dispose() {
+    clickSound.dispose();
+    super.dispose();
+  }
+  Future<void> _playClickSound() async {
+    await clickSound.setAsset('assets/ClickSound/clickSound.wav');
+    clickSound.play();
   }
 
   @override
@@ -156,7 +169,8 @@ class _SelecteditemState extends State<Selecteditem> {
                             Align(
                               alignment: Alignment.bottomRight,
                               child: InkWell(
-                                onTap: (){
+                                onTap: () async {
+                                  await _playClickSound();
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context)=> SlidingItems(
                                         items: widget.title,
@@ -205,7 +219,8 @@ class _SelecteditemState extends State<Selecteditem> {
                 shrinkWrap: true,
                 children: List.generate(items.length, (index) {
                   return InkWell(
-                    onTap: (){
+                    onTap: () async {
+                      await _playClickSound();
                       getStorage.setLast(
                         index,
                           widget.title == 'alphabets' ? 'alphabets'
@@ -236,21 +251,26 @@ class _SelecteditemState extends State<Selecteditem> {
                         ],
                       ),
                       child: Center(
-                          child: Text(items[index],
-                          style: TextStyle(
-                            fontFamily: fontFamily,
-                            fontSize: width / 4.4,
-                            fontWeight: FontWeight.w400,
-                            color: colorList[index % colorList.length],
-                            shadows: [
-                              Shadow(
-                                color: Colors.grey.shade400,
-                                blurRadius: 1,
-                                offset: const Offset(5, 0),
-                              ),
-                            ],
-                          )
-                      )),
+                          child: Padding(
+                            padding: EdgeInsets.only(top: widget.title == 'urdu letters' ? 20.0 : 0.0 ),
+                            child: Text(items[index],
+                            style: TextStyle(
+                              fontFamily: fontFamily,
+                              fontSize: widget.title == 'numbers'
+                                  ? width / 4.4 : widget.title == 'alphabets'
+                                  ? width / 3.8 : width / 3.5,
+                              fontWeight: FontWeight.w400,
+                              color: colorList[index % colorList.length],
+                              shadows: [
+                                Shadow(
+                                  color: Colors.grey.shade400,
+                                  blurRadius: 1,
+                                  offset: const Offset(5, 0),
+                                ),
+                              ],
+                            )
+                                                  ),
+                          )),
                     ),
                   );
                 }),

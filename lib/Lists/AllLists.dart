@@ -385,28 +385,34 @@ class AllLists {
     'assets/images/Trees/Apple tree.png',
   ];
   static List<String> colors = [
-    'assets/images/Shapes/Circle.png',
-    'assets/images/Shapes/Triangle.png',
-    'assets/images/Shapes/Square.png',
-    'assets/images/Shapes/Pentagon.png',
-    'assets/images/Shapes/Hexagon.png',
-    'assets/images/Shapes/Polygon.png',
+    'assets/images/Colors/green 1.png',
+    'assets/images/Colors/yellow 1.png',
+    'assets/images/Colors/orange 1.png',
+    'assets/images/Colors/pink 1.png',
+    'assets/images/Colors/blue 1.png',
+    'assets/images/Colors/Red 1.png',
+    'assets/images/Colors/grey 1.png',
+    'assets/images/Colors/brown 1.png',
+    'assets/images/Colors/purple 1.png',
+    'assets/images/Colors/magneto 1.png',
+    'assets/images/Colors/white 1.png',
+    'assets/images/Colors/black 1.png',
   ];
   static List<String> vegetables = [
-    'assets/images/Trees/Oak Tree.png',
-    'assets/images/Trees/Maple Tree.png',
-    'assets/images/Trees/Pine Tree.png',
-    'assets/images/Trees/Cherry Tree.png',
-    'assets/images/Trees/Palm Tree.png',
-    'assets/images/Trees/Apple tree.png',
+    'assets/images/Vegetables/carrot.png',
+    'assets/images/Vegetables/tomato.png',
+    'assets/images/Vegetables/potato.png',
+    'assets/images/Vegetables/broccoli.png',
+    'assets/images/Vegetables/radish.png',
+    'assets/images/Vegetables/spinach.png',
   ];
   static List<String> fruits = [
-    'assets/images/Trees/Oak Tree.png',
-    'assets/images/Trees/Maple Tree.png',
-    'assets/images/Trees/Pine Tree.png',
-    'assets/images/Trees/Cherry Tree.png',
-    'assets/images/Trees/Palm Tree.png',
-    'assets/images/Trees/Apple tree.png',
+    'assets/images/Fruits/apple.png',
+    'assets/images/Fruits/banana.png',
+    'assets/images/Fruits/orange.png',
+    'assets/images/Fruits/trawberry.png',
+    'assets/images/Fruits/grapes.png',
+    'assets/images/Fruits/watermillon.png',
   ];
 
 }

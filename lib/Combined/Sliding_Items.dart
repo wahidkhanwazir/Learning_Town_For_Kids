@@ -68,6 +68,7 @@ class _SlidingItemsState extends State<SlidingItems> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       playAudioForCurrentItem(0);
     });
+     clickSound = AudioPlayer();
   }
   final AudioPlayer audioPlayer = AudioPlayer();
 
@@ -86,6 +87,20 @@ class _SlidingItemsState extends State<SlidingItems> {
     } catch (e) {
       print(',,,,,,,,,,,,,Error playing audio: $e');
     }
+  }
+
+  late AudioPlayer clickSound = AudioPlayer();
+  Future<void> _playClickSound() async {
+    await clickSound.setAsset('assets/ClickSound/clickSound.wav');
+    clickSound.play();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.stop();
+    audioPlayer.dispose();
+    clickSound.dispose();
+    super.dispose();
   }
 
   @override
@@ -186,12 +201,10 @@ class _SlidingItemsState extends State<SlidingItems> {
                     scrollPhysics: const NeverScrollableScrollPhysics(),
                     viewportFraction: 0.7,
                     onPageChanged: (index, reason) async {
-                       setState(() {
+                      setState(() {
                         current = index;
-                       });
-                       if (index + 1 < items.length) {
-                         await playAudioForCurrentItem(index);
-                       }
+                      });
+                      await playAudioForCurrentItem(index);
                     }
                 ),
                 items: items.asMap().entries.map((entry) {
@@ -213,19 +226,24 @@ class _SlidingItemsState extends State<SlidingItems> {
                       ],
                     ),
                     child: Center(
-                      child: Text(entry.value.toString(),
-                        style: TextStyle(
-                          fontFamily: fontFamily,
-                          fontSize: width / 2.5,
-                          fontWeight: FontWeight.w400,
-                          color: slidingcolorList[entry.key % slidingcolorList.length],
-                          shadows: [
-                            Shadow(
-                              color: Colors.grey.shade500,
-                              blurRadius: 1,
-                              offset: const Offset(6, 0),
-                            ),
-                          ],
+                      child: Padding(
+                        padding: EdgeInsets.only(top: widget.items == 'urdu letters' ? 15.0 : 0.0 ),
+                        child: Text(entry.value.toString(),
+                          style: TextStyle(
+                            fontFamily: fontFamily,
+                            fontSize:  widget.items == 'numbers'
+                                ? width / 2.5 : widget.items == 'alphabets'
+                                ? width / 2.5 : width / 2.0,
+                            fontWeight: FontWeight.w400,
+                            color: slidingcolorList[entry.key % slidingcolorList.length],
+                            shadows: [
+                              Shadow(
+                                color: Colors.grey.shade500,
+                                blurRadius: 1,
+                                offset: const Offset(6, 0),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -237,7 +255,8 @@ class _SlidingItemsState extends State<SlidingItems> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 InkWell(
-                  onTap: (){
+                  onTap: () async {
+                    await _playClickSound();
                     setState(() {
                         _carouselController.animateToPage(
                           current = 0,
@@ -250,8 +269,8 @@ class _SlidingItemsState extends State<SlidingItems> {
                     height: height / 8.9,
                     width: height / 8.9,
                     decoration: BoxDecoration(
-                      color: const Color(0xff14A708),
-                        borderRadius: BorderRadius.circular(30),
+                      color: const Color(0xff131CF4),
+                        shape: BoxShape.circle,
                         border: Border.all(
                         color: Colors.grey.shade700,
                         width: 1,
@@ -272,6 +291,7 @@ class _SlidingItemsState extends State<SlidingItems> {
                 ),
                 InkWell(
                   onTap: () async {
+                    await _playClickSound();
                     setState(() {
                       isAutoPlayPaused = !isAutoPlayPaused;
                       if (isAutoPlayPaused) {
@@ -282,11 +302,11 @@ class _SlidingItemsState extends State<SlidingItems> {
                     });
                   },
                   child: Container(
-                    height: height / 8.9,
-                    width: height / 8.9,
+                    height: height / 9.2,
+                    width: height / 9.2,
                     decoration: BoxDecoration(
-                        color: const Color(0xff131CF4),
-                        borderRadius: BorderRadius.circular(30),
+                        color: Colors.white,
+                        shape: BoxShape.circle,
                       border: Border.all(
                         color: Colors.grey.shade700,
                         width: 1,
@@ -301,14 +321,15 @@ class _SlidingItemsState extends State<SlidingItems> {
                       ],
                     ),
                     child: Center(
-                      child: Icon(isAutoPlayPaused ? Icons.pause : Icons.play_arrow_rounded,
-                        size: width / 4.5,color: Colors.white,),
+                      child: Image.asset(isAutoPlayPaused ? 'assets/images/play.png'
+                          : 'assets/images/forward.png', scale: height / 170,),
                     ),
                   ),
                 ),
                 InkWell(
                   onTap: () async {
                     if(isAutoPlayPaused!= true) {
+                      await _playClickSound();
                       await playAudioForCurrentItem(current);
                     }
                   },
@@ -316,8 +337,8 @@ class _SlidingItemsState extends State<SlidingItems> {
                     height: height / 8.9,
                     width: height / 8.9,
                     decoration: BoxDecoration(
-                        color: const Color(0xffFF7A00),
-                        borderRadius: BorderRadius.circular(30),
+                      color: const Color(0xff131CF4),
+                        shape: BoxShape.circle,
                       border: Border.all(
                         color: Colors.grey.shade700,
                         width: 1,
