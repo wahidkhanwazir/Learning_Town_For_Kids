@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:learning_town_for_kids/Combined/ItemsDetail.dart';
+import 'package:learning_town_for_kids/Lists/AllLists.dart';
 import 'package:provider/provider.dart';
 import '../Storage_Provider/Storage_provider.dart';
 import 'Sliding_Items.dart';
@@ -25,16 +26,6 @@ class _SelecteditemState extends State<Selecteditem> {
     1,2,3,4,5,6,7,8,9,10,11,
     12,13,14,15,16,17,18,19,20
   ];
-
-  List<String> urduAlphabets = [
-    'ا', 'ب', 'پ', 'ت', 'ٹ', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ڈ', 'ذ',
-    'ر', 'ڑ', 'ز', 'ژ', 'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف',
-    'ق', 'ک', 'گ', 'ل', 'م', 'ن', 'و', 'ہ', 'ھ', 'ء', 'ی', 'ے',
-  ];
-  // List<String> urduAlphabets = [
-  //   'ب','ا','ت','پ','ث','ٹ','چ','ج','خ','ح','ڈ','د','ر','ذ','ز','ڑ','س','ژ','ص',
-  //   'ش','ط','ض','ع','ظ','ف','غ','ک','ق','ل','گ','ن','م','ہ','و','ء','ھ','ے','ی',
-  // ];
 
   List<dynamic> colorList = [
     const Color(0xffF70C28),
@@ -62,7 +53,7 @@ class _SelecteditemState extends State<Selecteditem> {
         fontFamily = 'bungee';
         break;
       case 'urdu letters':
-        items = urduAlphabets;
+        items = AllLists.urduLetters;
         fontFamily = 'katibeh';
         break;
       default:
@@ -228,10 +219,12 @@ class _SelecteditemState extends State<Selecteditem> {
                               : widget.title == 'numbers' ? 'numbers'
                               : widget.title == 'urdu letters' ? 'urdu letters'
                               : 'More',
-                          widget.title == 'alphabets' ? 'assets/images/abc 1.png'
-                              : widget.title == 'numbers' ? 'assets/images/123 1.png'
-                              : widget.title == 'urdu letters' ? 'assets/images/Urdu 1.png'
-                              : 'assets/images/more 1.png',);
+                          '',
+                        widget.title == 'alphabets' ? 'assets/images/abc 1.png'
+                            : widget.title == 'numbers' ? 'assets/images/123 1.png'
+                            : widget.title == 'urdu letters' ? 'assets/images/Urdu 1.png'
+                            : 'assets/images/more 1.png',
+                      );
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context)=> ItemsDetail(
                             index: index,
@@ -252,26 +245,29 @@ class _SelecteditemState extends State<Selecteditem> {
                         ],
                       ),
                       child: Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: widget.title == 'urdu letters' ? 20.0 : 0.0 ),
-                            child: Text(items[index],
-                            style: TextStyle(
-                              fontFamily: fontFamily,
-                              fontSize: widget.title == 'numbers'
-                                  ? width / 4.4 : widget.title == 'alphabets'
-                                  ? width / 3.8 : width / 3.5,
-                              fontWeight: FontWeight.w400,
-                              color: colorList[index % colorList.length],
-                              shadows: [
-                                Shadow(
-                                  color: Colors.grey.shade400,
-                                  blurRadius: 1,
-                                  offset: const Offset(5, 0),
-                                ),
-                              ],
-                            )
-                                                  ),
-                          )),
+                          child: widget.title == 'numbers' || widget.title == 'alphabets' ?
+                          Text(items[index],
+                          style: TextStyle(
+                            fontFamily: fontFamily,
+                            fontSize: widget.title == 'numbers'
+                                ? width / 4.4 : widget.title == 'alphabets'
+                                ? width / 3.8 : width / 3.5,
+                            fontWeight: FontWeight.w400,
+                            color: colorList[index % colorList.length],
+                            shadows: [
+                              Shadow(
+                                color: Colors.grey.shade400,
+                                blurRadius: 1,
+                                offset: const Offset(5, 0),
+                              ),
+                            ],
+                          )
+                        )
+                        : SizedBox(
+                              height: width / 4.5,
+                              width: width / 4.5,
+                              child: Image.asset(items[index],))
+                      ),
                     ),
                   );
                 }),

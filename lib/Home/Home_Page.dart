@@ -3,9 +3,12 @@ import 'package:just_audio/just_audio.dart';
 import 'package:learning_town_for_kids/Combined/ItemsDetail.dart';
 import 'package:learning_town_for_kids/Combined/More/More_Item_Detail.dart';
 import 'package:learning_town_for_kids/Combined/More/More_main.dart';
+import 'package:learning_town_for_kids/Combined/More/Selected_MoreItems.dart';
+import 'package:learning_town_for_kids/Home/Explore_Dua.dart';
 import 'package:learning_town_for_kids/Lists/AllLists.dart';
 import 'package:provider/provider.dart';
 import '../Combined/Selected_Item.dart';
+import '../Storage_Provider/DuaProvider.dart';
 import '../Storage_Provider/Storage_provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -48,6 +51,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<DuaProvider>(context, listen: false).checkForUpdate();
     var getStorage = Provider.of<StorageProvider>(context);
     Size size = MediaQuery.of(context).size;
     double height = size.height;
@@ -136,6 +140,8 @@ class _HomePageState extends State<HomePage> {
                                   child: InkWell(
                                     onTap: () async {
                                       await _playClickSound();
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context)=> const ExploreDua()));
                                     },
                                     child: Container(
                                       height: height / 22,
@@ -197,9 +203,14 @@ class _HomePageState extends State<HomePage> {
                            || getStorage.getLastImage() == 'assets/images/123 1.png' 
                            || getStorage.getLastImage() == 'assets/images/Urdu 1.png'  
                            ?  ItemsDetail(title: getStorage.getLastCatagory(), index: getStorage.getLastSubCatagory(),) :
-                              getStorage.getLastCatagory() == 'More' ?
-                              const MoreItems() :
-                              MoreItemDetail(title: getStorage.getLastCatagory())
+                              getStorage.getLastImage() == 'assets/images/Shapes/shapes.png'
+                             || getStorage.getLastImage() == 'assets/images/animals/animals.png'
+                             || getStorage.getLastImage() == 'assets/images/Trees/Trees.png'
+                             || getStorage.getLastImage() == 'assets/images/Colors/colors.png'
+                             || getStorage.getLastImage() == 'assets/images/Vegetables/vegatables.png'
+                             || getStorage.getLastImage() == 'assets/images/Fruits/fruits.png'
+                             ? MoreItemDetail(title: getStorage.getLastCatagory())
+                             : SelectedMoreItems(title: getStorage.getLastCatagory(), index: getStorage.getLastSubCatagory()),
                           ));
                     },
                     child: Container(
@@ -237,7 +248,12 @@ class _HomePageState extends State<HomePage> {
                                   ]
                                 ),
                                 child: Center(
-                                    child: Image.asset(getStorage.getLastImage()))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Image.asset(getStorage.getLastImage()),
+                                    )
+                                )
+                            ),
                           ),
                           Padding(
                              padding: const EdgeInsets.only(left: 30.0),
@@ -245,13 +261,13 @@ class _HomePageState extends State<HomePage> {
                                crossAxisAlignment: CrossAxisAlignment.start,
                                mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(getStorage.getLastCatagory() == 'shapes'
-                                    || getStorage.getLastCatagory() == 'animals'
-                                    || getStorage.getLastCatagory() == 'trees'
-                                    || getStorage.getLastCatagory() == 'colors'
-                                    || getStorage.getLastCatagory() == 'vegetables'
-                                    || getStorage.getLastCatagory() == 'fruits'
-                                  ? 'More' : getStorage.getLastCatagory(),
+                                Text(getStorage.getLastCatagory() == 'shapes' ? 'Shapes'
+                                    : getStorage.getLastCatagory() == 'animals' ? 'Animals'
+                                    : getStorage.getLastCatagory() == 'trees' ? 'Trees'
+                                    : getStorage.getLastCatagory() == 'colors' ? 'Colors'
+                                    : getStorage.getLastCatagory() == 'vegetables' ? 'Vegetables'
+                                    : getStorage.getLastCatagory() == 'fruits' ? 'Fruits'
+                                    : getStorage.getLastCatagory(),
                                   style: TextStyle(
                                     fontFamily: 'kalam',
                                     fontSize: width / 18,
@@ -265,12 +281,7 @@ class _HomePageState extends State<HomePage> {
                                 '${getStorage.getLastSubCatagory() + 1} of ${AllLists.allNumbersDetail.length} numbers'
                                   : getStorage.getLastCatagory() == 'urdu letters' ?
                                 '${getStorage.getLastSubCatagory() + 1} of ${AllLists.allUrduDetail.length} urdu alphabets'
-                                  : getStorage.getLastImage() == 'assets/images/Fruits/fruits.png' ? 'fruits'
-                                  : getStorage.getLastImage() == 'assets/images/animals/animals.png' ? 'animals'
-                                  : getStorage.getLastImage() == 'assets/images/Trees/Trees.png' ? 'trees'
-                                  : getStorage.getLastImage() == 'assets/images/Colors/colors.png' ? 'colors'
-                                  : getStorage.getLastImage() == 'assets/images/Vegetables/vegatables.png' ? 'vegetables'
-                                  : 'shapes',
+                                  : getStorage.getLastName(),
                                   style: TextStyle(
                                       fontFamily: 'kalam',
                                       fontSize: width / 23,
@@ -281,7 +292,7 @@ class _HomePageState extends State<HomePage> {
                                ],
                              ),
                            )
-                        ],
+                         ],
                       ),
                     ),
                   ),
@@ -302,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                         await _playClickSound();
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context)=> const MoreItems()));
-                        getStorage.setLast(0, 'More', imageList[3]);
+                        //getStorage.setLast(0, 'More', imageList[3]);
                       },
                       child: Container(
                         decoration: BoxDecoration(

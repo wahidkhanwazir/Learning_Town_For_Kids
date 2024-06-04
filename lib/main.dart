@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'Home/Home_Page.dart';
+import 'Storage_Provider/DuaProvider.dart';
 import 'Storage_Provider/Storage_provider.dart';
 
 Future<void> main() async {
   await GetStorage.init();
-  runApp(ChangeNotifierProvider<StorageProvider>(
-    create: (_) => StorageProvider(),
-        child: const MyApp(),
-     )
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<StorageProvider>(create: (_) => StorageProvider()),
+        ChangeNotifierProvider<DuaProvider>(create: (_) => DuaProvider()),
+      ],
+      child: const MyApp(),
+    ),
   );
 }
 

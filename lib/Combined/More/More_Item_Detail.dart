@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:learning_town_for_kids/Combined/More/Selected_MoreItems.dart';
 import 'package:learning_town_for_kids/Lists/AllLists.dart';
+
 
 class MoreItemDetail extends StatefulWidget {
   final String title;
@@ -24,27 +26,34 @@ class _MoreItemDetailState extends State<MoreItemDetail> {
   ];
 
   late List<dynamic> items;
+  late String kidImage;
   @override
   void initState() {
     super.initState();
     switch (widget.title) {
       case 'shapes':
-        items = AllLists.shapes;
+        items = AllLists.shapesImages;
+        kidImage = AllLists.kidsImages[0];
         break;
       case 'animals':
-        items = AllLists.animals;
+        items = AllLists.animalsImages;
+        kidImage = AllLists.kidsImages[1];
         break;
       case 'trees':
-        items = AllLists.trees;
+        items = AllLists.treesImages;
+        kidImage = AllLists.kidsImages[2];
         break;
       case 'colors':
-        items = AllLists.colors;
+        items = AllLists.colorsImages;
+        kidImage = AllLists.kidsImages[3];
         break;
       case 'vegetables':
-        items = AllLists.vegetables;
+        items = AllLists.vegetablesImages;
+        kidImage = AllLists.kidsImages[4];
         break;
       case 'fruits':
-        items = AllLists.fruits;
+        items = AllLists.fruitsImages;
+        kidImage = AllLists.kidsImages[5];
         break;
       default:
         items = [];
@@ -75,7 +84,7 @@ class _MoreItemDetailState extends State<MoreItemDetail> {
         backgroundColor: const Color(0xffFFFFFF),
         title: Padding(
           padding: const EdgeInsets.only(left: 8.0,top: 20),
-          child: Text('More',
+          child: Text(widget.title,
             style: TextStyle(
                 fontFamily: 'inknut',
                 fontSize: width / 20,
@@ -109,8 +118,8 @@ class _MoreItemDetailState extends State<MoreItemDetail> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(30.0),
                       image: const DecorationImage(
-                          image: AssetImage('assets/images/SceneriesBack/sceneryback 4.png',),
-                          fit: BoxFit.cover
+                           image: AssetImage('assets/images/SceneriesBack/sceneryback 4.png',),
+                          fit: BoxFit.cover,
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -125,11 +134,14 @@ class _MoreItemDetailState extends State<MoreItemDetail> {
                     children: [
                       Align(
                         alignment: Alignment.bottomLeft,
-                        child: SizedBox(
-                          height: height / 5.4,
-                          child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Image.asset('assets/images/Kids/kid 5.png')
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: SizedBox(
+                            height: height / 5.4,
+                            child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Image.asset(kidImage)
+                            ),
                           ),
                         ),
                       ),
@@ -166,11 +178,12 @@ class _MoreItemDetailState extends State<MoreItemDetail> {
                     return InkWell(
                       onTap: () async {
                         await _playClickSound();
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context)=> ItemsDetail(
-                        //       index: index,
-                        //       title: widget.title,
-                        //     )));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context)=> SelectedMoreItems(
+                              title: widget.title,
+                              index: index,
+                            ))
+                        );
                       },
                       child: Container(
                         decoration: BoxDecoration(

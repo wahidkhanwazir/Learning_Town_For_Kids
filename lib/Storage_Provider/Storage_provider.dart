@@ -4,11 +4,13 @@ import 'package:get_storage/get_storage.dart';
 class StorageProvider extends ChangeNotifier{
   var lastSubCatagoryRead = GetStorage();
   var lastCatagoryRead = GetStorage();
+  var lastnameRead = GetStorage();
   var lastImageRead = GetStorage();
 
-  void setLast(int lastSubCatagory, String lastCatagory, String lastImage){
+  void setLast(int lastSubCatagory, String lastCatagory, String lastName, String lastImage){
     lastSubCatagoryRead.write('catagory', lastSubCatagory);
     lastCatagoryRead.write('subCatagory', lastCatagory);
+    lastnameRead.write('name', lastName);
     lastImageRead.write('image', lastImage);
     notifyListeners();
   }
@@ -18,7 +20,15 @@ class StorageProvider extends ChangeNotifier{
       return lastCatagoryRead.read('subCatagory');
     }
     else{
-      return 'Alphabets';
+      return 'alphabets';
+    }
+  }
+  String getLastName(){
+    if(lastnameRead.read('name') != null) {
+      return lastnameRead.read('name');
+    }
+    else{
+      return 'shapes';
     }
   }
   int getLastSubCatagory(){

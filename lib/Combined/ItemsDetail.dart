@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:learning_town_for_kids/Lists/AllLists.dart';
 import 'package:provider/provider.dart';
-
 import '../Storage_Provider/Storage_provider.dart';
 
 class ItemsDetail extends StatefulWidget {
@@ -164,7 +163,7 @@ class _ItemsDetailState extends State<ItemsDetail> {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 10.0,right: 5.0,),
+                            padding: const EdgeInsets.only(top: 10.0,right: 10.0,),
                             child: Column(
                               children: [
                                 Text(items,
@@ -239,42 +238,6 @@ class _ItemsDetailState extends State<ItemsDetail> {
                   ),
                   child: Center(
                       child: Image.asset(detail,fit: BoxFit.fitHeight,)),
-                  // child: Column(
-                  //   children: [
-                  //     Text('Aa',
-                  //       style: TextStyle(
-                  //         fontFamily: 'alfaSlabOne',
-                  //         fontSize: width / 4.5,
-                  //         fontWeight: FontWeight.w400,
-                  //         color: const Color(0xffF70C28),
-                  //         shadows: [
-                  //           Shadow(
-                  //             color: Colors.grey.shade400,
-                  //             blurRadius: 1,
-                  //             offset: const Offset(5, 0),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //     SizedBox(
-                  //       height: height / 5,
-                  //         child: Image.asset('assets/images/Allah.png')),
-                  //     Text('Allah',
-                  //       style: TextStyle(
-                  //         fontFamily: 'abeezee',
-                  //         fontSize: width / 6,
-                  //         fontWeight: FontWeight.w400,
-                  //         shadows: [
-                  //           Shadow(
-                  //             color: Colors.grey.shade400,
-                  //             blurRadius: 1,
-                  //             offset: const Offset(5, 0),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
                 ),
               ),
               Row(
@@ -296,6 +259,7 @@ class _ItemsDetailState extends State<ItemsDetail> {
                             : widget.title == 'numbers' ? 'numbers'
                             : widget.title == 'urdu letters' ? 'urdu letters'
                             : 'More',
+                        '',
                         widget.title == 'alphabets' ? 'assets/images/abc 1.png'
                             : widget.title == 'numbers' ? 'assets/images/123 1.png'
                             : widget.title == 'urdu letters' ? 'assets/images/Urdu 1.png'
@@ -379,10 +343,11 @@ class _ItemsDetailState extends State<ItemsDetail> {
                             : widget.title == 'numbers' ? 'numbers'
                             : widget.title == 'urdu letters' ? 'urdu letters'
                             : 'More',
+                        '',
                         widget.title == 'alphabets' ? 'assets/images/abc 1.png'
-                            : widget.title == 'numbers' ? 'assets/images/123 1.png'
-                            : widget.title == 'urdu letters' ? 'assets/images/Urdu 1.png'
-                            : 'assets/images/more 1.png',);
+                          : widget.title == 'numbers' ? 'assets/images/123 1.png'
+                          : widget.title == 'urdu letters' ? 'assets/images/Urdu 1.png'
+                          : 'assets/images/more 1.png',);
                     },
                     child: Container(
                       height: height / 9.2,

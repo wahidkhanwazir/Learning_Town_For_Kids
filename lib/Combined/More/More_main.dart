@@ -107,11 +107,14 @@ class _MoreItemsState extends State<MoreItems> {
                     children: [
                       Align(
                         alignment: Alignment.bottomLeft,
-                        child: SizedBox(
-                          height: height / 5.4,
-                          child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Image.asset('assets/images/Kids/kid 5.png')
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: SizedBox(
+                            height: height / 5.4,
+                            child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Image.asset('assets/images/Kids/kid 5.png')
+                            ),
                           ),
                         ),
                       ),
@@ -166,7 +169,7 @@ class _MoreItemsState extends State<MoreItems> {
     return InkWell(
       onTap: () async {
         await _playClickSound();
-        getStorage.setLast(index, title2, imageList[index]);
+        getStorage.setLast(index, title2, title,imageList[index]);
         Navigator.push(context,
             MaterialPageRoute(builder: (context)=> MoreItemDetail(title: title2,)));
       },

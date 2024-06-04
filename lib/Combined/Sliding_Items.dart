@@ -24,10 +24,6 @@ class _SlidingItemsState extends State<SlidingItems> {
     1,2,3,4,5,6,7,8,9,10,11,
     12,13,14,15,16,17,18,19,20
   ];
-  List<String> urduAlphabets = [
-    'ا', 'ب', 'پ', 'ت', 'ٹ', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ڈ', 'ذ', 'ر', 'ڑ', 'ز', 'ژ', 'س', 'ش',
-    'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ک', 'گ', 'ل', 'م', 'ن', 'و', 'ہ', 'ھ', 'ء', 'ی', 'ے',
-  ];
 
   List<dynamic> slidingcolorList = [
     const Color(0xffF70C28),
@@ -58,7 +54,7 @@ class _SlidingItemsState extends State<SlidingItems> {
         fontFamily = 'bungee';
         break;
       case 'urdu letters':
-        items = urduAlphabets;
+        items = AllLists.urduLetters;
         fontFamily = 'katibeh';
         urdu = true;
         break;
@@ -233,26 +229,28 @@ class _SlidingItemsState extends State<SlidingItems> {
                             ],
                           ),
                           child: Center(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: widget.items == 'urdu letters' ? 15.0 : 0.0 ),
-                              child: Text(entry.value.toString(),
-                                style: TextStyle(
-                                  fontFamily: fontFamily,
-                                  fontSize:  widget.items == 'numbers'
-                                      ? width / 2.5 : widget.items == 'alphabets'
-                                      ? width / 2.5 : width / 2.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: slidingcolorList[entry.key % slidingcolorList.length],
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.grey.shade500,
-                                      blurRadius: 1,
-                                      offset: const Offset(6, 0),
-                                    ),
-                                  ],
-                                ),
+                            child: widget.items == 'numbers' || widget.items == 'alphabets' ?
+                            Text(entry.value.toString(),
+                              style: TextStyle(
+                                fontFamily: fontFamily,
+                                fontSize:  widget.items == 'numbers'
+                                    ? width / 3.0 : widget.items == 'alphabets'
+                                    ? width / 2.5 : width / 2.5,
+                                fontWeight: FontWeight.w400,
+                                color: slidingcolorList[entry.key % slidingcolorList.length],
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.grey.shade500,
+                                    blurRadius: 1,
+                                    offset: const Offset(6, 0),
+                                  ),
+                                ],
                               ),
-                            ),
+                            )
+                                : SizedBox(
+                                      height: width / 4.5,
+                                      width: width / 4.5,
+                                      child: Image.asset(entry.value,))
                           ),
                         );
                       }).toList(),
